@@ -74,5 +74,5 @@
                                     (pjstadig.humane-test-output/activate!)]}
    :project/test  {:jvm-opts       ["-Dconf=test-config.edn"]
                    :resource-paths ["env/test/resources"]}
-   :profiles/dev  {}
-   :profiles/test {}})
+   :profiles/dev  {:env {:database-url "jdbc:h2:./guestbook_dev.db.mv.db"}}
+   :profiles/test {:env {:database-url "jdbc:h2:./guestbook_test.db.mv.db"}}})
