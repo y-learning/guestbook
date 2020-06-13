@@ -62,7 +62,9 @@
                                     [ring/ring-devel "1.8.1"]
                                     [ring/ring-mock "0.4.0"]]
                    :plugins        [[com.jakemccrary/lein-test-refresh "0.24.1"]
-                                    [jonase/eastwood "0.3.5"]]
+                                    [jonase/eastwood "0.3.5"]
+                                    [migratus-lein "0.7.3"]
+                                    [venantius/ultra "0.6.0"]]
 
                    :source-paths   ["env/dev/clj"]
                    :resource-paths ["env/dev/resources"]
