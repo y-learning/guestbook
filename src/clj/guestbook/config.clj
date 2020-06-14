@@ -8,6 +8,4 @@
           :start
           (load-config
             :merge
-            [(args)
-             (source/from-system-props)
-             (source/from-env)]))
+            [(args) (source/from-system-props) (source/from-env)]))

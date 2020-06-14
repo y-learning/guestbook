@@ -1,37 +1,32 @@
 (ns guestbook.test.db.core
   (:require
-   [guestbook.db.core :refer [*db*] :as db]
-   [java-time.pre-java8]
-   [luminus-migrations.core :as migrations]
-   [clojure.test :refer :all]
-   [next.jdbc :as jdbc]
-   [guestbook.config :refer [env]]
-   [mount.core :as mount]))
+    [clojure.test :refer :all]
+    [guestbook.db.core :refer [*db*] :as db]
+    [java-time.pre-java8]
+    [luminus-migrations.core :as migrations]
+    [next.jdbc :as jdbc]
+    [guestbook.config :refer [env]]
+    [mount.core :as mount])
+  (:import (java.util Date)))
 
 (use-fixtures
   :once
   (fn [f]
     (mount/start
-     #'guestbook.config/env
-     #'guestbook.db.core/*db*)
+      #'guestbook.config/env
+      #'guestbook.db.core/*db*)
     (migrations/migrate ["migrate"] (select-keys env [:database-url]))
     (f)))
 
-(deftest test-users
-  (jdbc/with-transaction [t-conn *db* {:rollback-only true}]
-    (is (= 1 (db/create-user!
-              t-conn
-              {:id         "1"
-               :first_name "Sam"
-               :last_name  "Smith"
-               :email      "sam.smith@example.com"
-               :pass       "pass"})))
-    (is (= {:id         "1"
-            :first_name "Sam"
-            :last_name  "Smith"
-            :email      "sam.smith@example.com"
-            :pass       "pass"
-            :admin      nil
-            :last_login nil
-            :is_active  nil}
-           (db/get-user t-conn {:id "1"})))))
+(deftest test-save-get-messages
+  (jdbc/with-transaction
+    [t-conn *db* {:rollback-only true}]
+    (let [message {:name "Bob" :message "Hello there!" :timestamp (Date.)}]
+      (is (= 1 (db/save-message!
+                 t-conn
+                 message
+                 {:connection t-conn})))
+      (is (= message
+             (-> (db/get-messages t-conn {:id "1"})
+                 (first)
+                 (select-keys [:name :message :timestamp])))))))
