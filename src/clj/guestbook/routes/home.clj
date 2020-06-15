@@ -17,7 +17,6 @@
 
 (defn home-page [request]
   (let [{flash :flash} request]
-    (println flash)
     (layout/render request
                    "home.html"
                    (merge {:messages (db/get-messages)}
