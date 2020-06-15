@@ -1,14 +1,12 @@
-# guestbook
+# GuestBook
+Web app based on [Luminus][1] framework.
 
-generated using Luminus version "3.75"
-
-FIXME
-
+[1]: https://github.com/luminus-framework/luminus
 ## Prerequisites
 
-You will need [Leiningen][1] 2.0 or above installed.
+You will need [Leiningen][2] 2.0 or above installed.
 
-[1]: https://github.com/technomancy/leiningen
+[2]: https://github.com/technomancy/leiningen
 
 ## Running
 
@@ -16,6 +14,12 @@ To start a web server for the application, run:
 
     lein run 
 
-## License
+To deploy your app:
 
-Copyright © 2020 FIXME
+    lein run migrate
+    lein uberjar
+    export DATABASE_URL="jdbc:h2:~/dev/clojure/guestbook/guestbook_dev.db"
+    
+then run your app using:
+
+    java -jar guestbook.jar
