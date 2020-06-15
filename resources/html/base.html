@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to guestbook</title>
-
+    <title>Welcome to GuestBook</title>
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <!-- styles -->
     {% style "/assets/bulma/css/bulma.min.css" %}
     {% style "/assets/material-icons/css/material-icons.min.css" %}
-
     {% style "/css/screen.css" %}
 </head>
 <body>
@@ -26,10 +28,12 @@
         </div>
         <div id="nav-menu" class="navbar-menu">
             <div class="navbar-start">
-                <a href="/" class="navbar-item{% ifequal page " home.html" %}
-                is-active{%endifequal%}">Home</a>
-                <a href="/about" class="navbar-item{% ifequal page " about.html"
-                %} is-active{%endifequal%}">About</a>
+                <a href="/"
+                   class="navbar-item{% ifequal page home.html %}is-active
+                   {%endifequal%}">Home</a>
+                <a href="/about"
+                   class="navbar-item{% ifequal page about.html %}is-active
+                   {%endifequal%}">About</a>
             </div>
         </div>
     </div>
@@ -53,7 +57,6 @@
         });
     })();
 </script>
-
 
 {% block page-scripts %}
 {% endblock %}
