@@ -13,8 +13,8 @@
     [guestbook.controllers.about-controller :as ac]))
 
 (mount/defstate init-app
-                :start ((or (:init defaults) (fn [])))
-                :stop ((or (:stop defaults) (fn []))))
+  :start ((or (:init defaults) (fn [])))
+  :stop ((or (:stop defaults) (fn []))))
 
 (defn- page [error-code title]
   (constantly (error-page {:status error-code, :title title})))
@@ -24,17 +24,17 @@
    :method-not-allowed (page 405 "405 - Not allowed")
    :not-acceptable     (page 406 "406 - Not acceptable")})
 
+(def controllers {:smc (smc/->SaveMessageController)
+                  :gmc (gmc/->GetMessagesController)
+                  :ac  (ac/->AboutController)})
+
 (mount/defstate app-routes
-                :start
-                (ring/ring-handler
-                  (ring/router
-                    [(home-routes {:smc (smc/->SaveMessageController)
-                                   :gmc (gmc/->GetMessagesController)
-                                   :ac  (ac/->AboutController)})])
-                  (ring/routes
-                    (ring/create-resource-handler {:path "/"})
-                    (wrap-content-type (wrap-webjars (constantly nil)))
-                    (ring/create-default-handler cases))))
+  :start (ring/ring-handler
+           (ring/router [(home-routes controllers)])
+           (ring/routes
+             (ring/create-resource-handler {:path "/"})
+             (wrap-content-type (wrap-webjars (constantly nil)))
+             (ring/create-default-handler cases))))
 
 (defn app []
   (middleware/wrap-base #'app-routes))

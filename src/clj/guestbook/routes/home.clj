@@ -1,7 +1,6 @@
 (ns guestbook.routes.home
   (:require
     [guestbook.middleware :as middleware]
-    [ring.util.response]
     [guestbook.controllers.controller :as ctrl]))
 
 (defn home-routes [controllers]
