@@ -19,7 +19,7 @@
 (defn- page [error-code title]
   (constantly (error-page {:status error-code, :title title})))
 
-(def cases
+(def error-pages
   {:not-found          (page 404 "404 - Page not found")
    :method-not-allowed (page 405 "405 - Not allowed")
    :not-acceptable     (page 406 "406 - Not acceptable")})
@@ -34,7 +34,7 @@
            (ring/routes
              (ring/create-resource-handler {:path "/"})
              (wrap-content-type (wrap-webjars (constantly nil)))
-             (ring/create-default-handler cases))))
+             (ring/create-default-handler error-pages))))
 
 (defn app []
   (middleware/wrap-base #'app-routes))
