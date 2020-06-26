@@ -6,7 +6,7 @@
     [clojure.spec.alpha :as s]
     [expound.alpha :as expound]
     [mount.core :as mount]
-    [guestbook.core :refer [start-app]]
+    [guestbook.server :refer [start-app]]
     [guestbook.db.core]
     [conman.core :as conman]
     [luminus-migrations.core :as migrations]))
@@ -19,12 +19,12 @@
   "Starts application.
   You'll usually want to run this on startup."
   []
-  (mount/start-without #'guestbook.core/repl-server))
+  (mount/start-without #'guestbook.server/repl-server))
 
 (defn stop
   "Stops application."
   []
-  (mount/stop-except #'guestbook.core/repl-server))
+  (mount/stop-except #'guestbook.server/repl-server))
 
 (defn restart
   "Restarts application."
