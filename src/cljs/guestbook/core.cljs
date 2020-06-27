@@ -1,6 +1,12 @@
-(ns guestbook.core)
+(ns guestbook.core
+  (:require [reagent.dom :as dom :refer [render]]
+            [guestbook.message-form :as message-form]))
 
-(-> js/document
-    (. getElementById "content")
-    (. -innerHTML)
-    (set! "Hello, World!"))
+(defn home []
+  [:div.row
+   [:div.span12
+    [message-form/form]]])
+
+(dom/render [home]
+            (.getElementById js/document "content"))
+
