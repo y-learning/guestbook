@@ -1,8 +1,6 @@
 (ns guestbook.controllers.save-message-controller
   (:require [ring.util.http-response :as response]
             [guestbook.db.core :as db]
-            [ring.util.response]
-            [ring.util.http-response :as response]
             [struct.core :as st]
             [guestbook.controllers.controller :as ctrl])
   (:import (java.util Date)))
@@ -15,11 +13,14 @@
 
 (defn save-message! [{:keys [params]}]
   (if-let [errors (first (validate-message params))]
-    (-> (response/found "/")
-        (assoc :flash (assoc params :errors errors)))
-    (do
+    (response/bad-request {:errors errors})
+    (try
       (db/save-message! (assoc params :timestamp (Date.)))
-      (response/found "/"))))
+      (response/ok {:status :ok})
+      (catch Exception e
+        (println "save-message! failed: " e)
+        (response/internal-server-error
+          {:errors {:server-error ["Failed to save the message!"]}})))))
 
 (defrecord SaveMessageController []
   ctrl/Controller
