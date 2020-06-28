@@ -3,7 +3,8 @@
             [ajax.core :refer [GET POST]]
             [guestbook.errors-component :refer [errors-alert?]]
             [guestbook.button-component :refer [submit-btn]]
-            [guestbook.field-component :refer [label-text label-textarea]]))
+            [guestbook.field-component :refer [label-text label-textarea]]
+            [clojure.core.async :refer [>! <! go]]))
 
 (defn get-value [synthetic-event]
   (-> synthetic-event .-target .-value))
@@ -11,7 +12,7 @@
 (defn get-csrf-token []
   (.-value (.getElementById js/document "csrf-token")))
 
-(defn send-message! [fields errors]
+(defn send-message! [fields errors append-msg-chan]
   (POST "/message"
         {:format        :json
          :headers       {"Accept"       "application/transit+json"
@@ -19,7 +20,8 @@
          :params        @fields
          :handler       #(do
                            (.log js/console (str "response: " %))
-                           (reset! errors nil))
+                           (reset! errors nil)
+                           (go (>! append-msg-chan @fields)))
          :error-handler #(do
                            (.error js/console (str "Errors::" %))
                            (reset! errors (get-in % [:response :errors])))}))
@@ -30,7 +32,7 @@
 (defn- input [input-fn title id fields]
   [input-fn title id (id @fields) #(update-field id fields %)])
 
-(defn form []
+(defn form [append-msg-chan]
   (let [fields (reagent/atom {}) errors (reagent/atom nil)]
     (fn []
       [:div.content
@@ -39,4 +41,6 @@
         [input label-text "Name" :name fields]
         [errors-alert? :message errors]
         [input label-textarea "Message" :message fields]
-        [submit-btn "Comment" #(send-message! fields errors)]]])))
+        [submit-btn "Comment" #(send-message! fields
+                                              errors
+                                              append-msg-chan)]]])))
