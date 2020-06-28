@@ -1,31 +1,25 @@
 (ns guestbook.message-form
-  (:require [reagent.core :as reagent]))
+  (:require [reagent.core :as reagent]
+            [guestbook.errors-component :refer [errors-alert?]]
+            [guestbook.button-component :refer [submit-btn]]
+            [guestbook.field-component :refer [label-text label-textarea]]))
 
 (defn get-value [synthetic-event]
   (-> synthetic-event .-target .-value))
 
-(defn common-input-atr [name state]
-  {:name      name
-   :value     (name @state)
-   :on-change #(swap! state assoc name (get-value %))})
+(defn update-field [id fields synthetic-event]
+  (swap! fields assoc id (get-value synthetic-event)))
 
-(defn name-input [state]
-  [:p "Name"
-   [:input.form-control (assoc (common-input-atr :name state) :type :text)]])
-
-(defn message-input [state]
-  [:p "Message"
-   [:textarea.form-control
-    (assoc (common-input-atr :message state) :rows 4 :cols 50)]])
-
-(defn submit-btn [label]
-  [:input.btn.btn-primary {:type :submit :value label}])
+(defn- input [input-fn title id fields]
+  [input-fn title id (id @fields) #(update-field id fields %)])
 
 (defn form []
-  (let [fields (reagent/atom {})]
+  (let [fields (reagent/atom {}) errors (reagent/atom nil)]
     (fn []
       [:div.content
        [:div.form-group
-        [name-input fields]
-        [message-input fields]
-        [submit-btn "Comment"]]])))
+        [errors-alert? :name errors]
+        [input label-text "Name" :name fields]
+        [errors-alert? :message errors]
+        [input label-textarea "Message" :message fields]
+        [submit-btn "Comment" #(println "")]]])))
