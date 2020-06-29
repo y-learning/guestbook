@@ -4,7 +4,6 @@
             [guestbook.errors-component :refer [errors-alert?]]
             [guestbook.button-component :refer [submit-btn]]
             [guestbook.field-component :refer [label-text label-textarea]]
-            [guestbook.popup-confirm-component :as popup]
             [clojure.core.async :refer [>! <! go]]))
 
 (defn get-value [synthetic-event]
