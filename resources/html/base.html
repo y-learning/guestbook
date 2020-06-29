@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <!-- Required meta tags -->
     <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to GuestBook</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet"
-          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+          crossorigin="anonymous">
+
+    <!-- Bulma -->
     <link rel="stylesheet"
-          href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <!-- styles -->
-    {% style "/assets/bulma/css/bulma.min.css" %}
-    {% style "/assets/material-icons/css/material-icons.min.css" %}
+          href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+
     {% style "/css/screen.css" %}
+
+    <title>Welcome to GuestBook</title>
 </head>
 <body>
 <!-- navbar -->
@@ -19,7 +26,7 @@
     <div class="container">
         <div class="navbar-brand">
             <a class="navbar-item" href="/"
-               style="font-weight:bold;">guestbook</a>
+               style="font-weight:bold;">Guestbook</a>
             <span class="navbar-burger burger" data-target="nav-menu">
                       <span></span>
                       <span></span>
@@ -46,18 +53,7 @@
     </div>
 </section>
 
-<!-- scripts -->
-<script type="text/javascript">
-    (function () {
-        var burger = document.querySelector('.burger');
-        var nav = document.querySelector('#' + burger.dataset.target);
-        burger.addEventListener('click', function () {
-            burger.classList.toggle('is-active');
-            nav.classList.toggle('is-active');
-        });
-    })();
-</script>
-
+{% script "/js/app.js" %}
 {% block page-scripts %}
 {% endblock %}
 </body>

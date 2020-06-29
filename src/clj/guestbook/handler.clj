@@ -10,7 +10,7 @@
     [mount.core :as mount]
     [guestbook.controllers.save-message-controller :as smc]
     [guestbook.controllers.get-messages-controller :as gmc]
-    [guestbook.controllers.about-controller :as ac]))
+    [guestbook.controllers.clear-messages-controller :as cmc]))
 
 (mount/defstate init-app
   :start ((or (:init defaults) (fn [])))
@@ -26,7 +26,7 @@
 
 (def controllers {:smc (smc/->SaveMessageController)
                   :gmc (gmc/->GetMessagesController)
-                  :ac  (ac/->AboutController)})
+                  :cmc (cmc/->ClearMessagesController)})
 
 (mount/defstate app-routes
   :start (ring/ring-handler
