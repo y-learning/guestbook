@@ -9,4 +9,5 @@
    ["/" #(layout/render % "home.html")]
    ["/about" #(layout/render % "about.html")]
    ["/messages" {:get #(ctrl/handle (:gmc controllers) %)}]
-   ["/message" {:post #(ctrl/handle (:smc controllers) %)}]])
+   ["/message" {:post #(ctrl/handle (:smc controllers) %)}]
+   ["/messages/clear" {:post #(ctrl/handle (:cmc controllers) %)}]])

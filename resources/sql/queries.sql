@@ -14,3 +14,8 @@ FROM guestbook;
 SELECT *
 FROM guestbook
 WHERE id = :id;
+
+-- :name delete-messages! :! :n
+-- :doc delete all messages from the db.
+DELETE
+FROM guestbook;

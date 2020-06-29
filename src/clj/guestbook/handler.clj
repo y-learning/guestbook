@@ -9,7 +9,8 @@
     [guestbook.env :refer [defaults]]
     [mount.core :as mount]
     [guestbook.controllers.save-message-controller :as smc]
-    [guestbook.controllers.get-messages-controller :as gmc]))
+    [guestbook.controllers.get-messages-controller :as gmc]
+    [guestbook.controllers.clear-messages-controller :as cmc]))
 
 (mount/defstate init-app
   :start ((or (:init defaults) (fn [])))
@@ -24,7 +25,8 @@
    :not-acceptable     (page 406 "406 - Not acceptable")})
 
 (def controllers {:smc (smc/->SaveMessageController)
-                  :gmc (gmc/->GetMessagesController)})
+                  :gmc (gmc/->GetMessagesController)
+                  :cmc (cmc/->ClearMessagesController)})
 
 (mount/defstate app-routes
   :start (ring/ring-handler

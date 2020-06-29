@@ -22,11 +22,20 @@
 (defn append-msg [messages new-msg]
   (swap! messages conj (assoc new-msg :timestamp (js/Date.))))
 
+(defn messages-chan-events [messages-chan messages]
+  (go
+    (while true
+      (if-let [new-event (<! messages-chan)]
+        (let [message (:append new-event)]
+          (cond message
+                (append-msg messages message)
+
+                (:clear new-event)
+                (reset! messages nil)))))))
+
 (defn home []
-  (let [messages (reagent/atom nil) append-msg-chan (chan)]
-    (go (while true
-          (if-let [new-msg (<! append-msg-chan)]
-            (append-msg messages new-msg))))
+  (let [messages (reagent/atom nil) messages-chan (chan)]
+    (messages-chan-events messages-chan messages)
     (get-messages messages)
     (fn []
       [:div
@@ -35,7 +44,7 @@
          [messages-list messages]]]
        [:div.row
         [:div.span12
-         [message-form/form append-msg-chan]]]])))
+         [message-form/form messages-chan]]]])))
 
 (dom/render [home]
             (.getElementById js/document "content"))
